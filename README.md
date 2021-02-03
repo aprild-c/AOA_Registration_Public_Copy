@@ -7,3 +7,9 @@ Implemented on the organization's website as an iframe within the event page's S
 Iframe link: https://shrouded-lowlands-41249.herokuapp.com/
 
 Example event page: https://alloutadventures.z2systems.com/np/clients/alloutadventures/event.jsp?event=8451&
+
+Test the filter slots form by inputting any of the following:
+3 Tandem Recumbent Trikes
+2 Duet Wheelchair Bicycle Tandems
+Check off Green Speed Recumbent GTO Trike
+10 Tandem Recumbent Trikes
