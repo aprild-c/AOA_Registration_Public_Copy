@@ -1,0 +1,241 @@
+html {
+    overflow: -moz-scrollbars-vertical;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, .5);
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+
+#pageContent {
+    display: none;
+}
+
+#pageContent {
+    margin-bottom: 30px;
+}
+
+#loader {
+    position: fixed;
+    left: 50vw;
+    top: 25vh;
+    z-index: 1;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #0f6cb7;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.hiddenVar {
+    visibility: hidden;
+    position: fixed;
+}
+
+table {
+    width: 99%;
+    font-family: "Open Sans",sans-serif;
+    word-wrap: break-word;
+    cursor: default;
+}
+
+td {
+    color: #3f3f3f;
+    font-size: 17px;
+}
+
+#description u, #timeSlotsSubtitle, .title {
+    color: #1d3654;
+    padding-top: 20px;
+}
+
+#description u, #timeSlotsSubtitle {
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.title {
+    font-size: 40px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.eventDateTimeVenue {
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 10px solid #67bc50;
+    padding-bottom: 20px;
+}
+
+#timeSlotsSubtitle {
+    padding-top: 4px;
+}
+
+#newUserMessage {
+    font-style: italic;
+    color: #a3a3a3;
+    font-size: 75%;
+}
+
+#filtersSection {
+    width: 302px;
+    border-style: dashed;
+    border-width: 3px;
+    background-clip: border-box;
+    border-color: #67bc50;
+    margin-right: 10px;
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+#filtersSectionHeader {
+    color: #1d3654;
+    text-align: center;
+}
+
+#timeSlotsSection {
+    white-space: nowrap;
+    vertical-align: top;
+}
+
+.userInputs {
+    width: 40px;
+    align-content: center;
+    display:inline-block;
+    float: right;
+}
+
+#filterSlotsForm, input {
+    display: inline-block;
+}
+input {
+    text-align: center;
+    cursor: pointer;
+}
+
+label {
+    cursor: pointer;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    opacity: 1;
+}
+
+.filterRows td label {
+    margin-bottom: 0;
+}
+
+.filterRows td {
+    font-size: 80%;
+    line-height: 150%;
+    padding: 3px 0;
+}
+
+.checkboxTd {
+    padding: 0 0;
+    line-height: 15px;
+    width: 400px;
+}
+
+.checkboxTd input {
+    vertical-align: text-bottom;
+    width: 13px;
+    margin-left: 15px;
+}
+.checkboxTd label {
+    font-size: 60%;
+    margin-bottom: 0;
+
+}
+
+.button {
+    background-color: #67bc50;
+    color: #FFFFFF;
+    text-decoration: none;
+    border-width: 0;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 70%;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.35px;
+}
+
+.button:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    filter: brightness(104%);
+    color: white;
+}
+
+#timeSlotsSection .button {
+    margin-left: 15px;
+}
+
+#formSubmitBttn {
+    background-color: #0f6cb7;
+    text-transform: unset;
+    float: right;
+}
+
+.timeSlotRows {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+a#reset {
+    font-size: 75%;
+}
+
+#noSlotsMessage {
+    display: none;
+    font-size: 13px;
+    width: 20px;
+    color: #a3a3a3;
+    font-style: italic;
+}
+
+#noSlotsMessage strong {
+    font-size: 17px;
+    color: #0f6cb7;
+}
+
+.questionMarkImg {
+    width: 13px;
+    vertical-align: top;
+    cursor: help;
+}
+
+.moreInfo {
+    background-color: #1095f9;
+    border-radius: 5px;
+    font-size: 12px;
+    color: white;
+    font-weight: normal;
+    width: 217px;
+    padding: 7px;
+    height: 70px;
+}

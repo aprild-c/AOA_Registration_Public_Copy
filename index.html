@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Out Adventures</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+    {% load static %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="{% static 'registrationStylesheet.css' %}" rel="stylesheet" type="text/css">
+    <script src="../static/determineSlots.js"></script>
+</head>
+<body>
+    <div id="loader"></div>
+    <span id="pageContent">
+        {% with firstTimeSlot=timeSlots.0 lastTimeSlot=timeSlots|last %}
+        <table>
+            <tr><td colspan="2" class="title">{{ firstTimeSlot.name }}</td></tr>
+            <tr><td colspan="2" class="eventDateTimeVenue">{{ firstTimeSlot.start.formatted }} - {{ lastTimeSlot.end.formatted|slice:"-8:" }} <br>
+            {{ firstTimeSlot.venue.name }}</td></tr>
+            <tr><td colspan="2" id="description">{{ firstTimeSlot.description|safe }}</td></tr>
+            <tr><th colspan="2" id="timeSlotsSubtitle">Available Time Slots</th></tr>
+            <tr>
+                <td id="timeSlotsSection" {% if firstTimeSlot.ticket_types|length < 2 %} colspan="2" {% endif %}>
+                    <div id="noSlotsMessage">
+                        <strong>No time slots match your equipment request!</strong><br>
+                        Clear All filters, then choose a time slot and you can add<br>your email address to our waiting list.
+                    </div>
+                    {% for timeSlot in timeSlots %}
+
+                    {% endfor %}
+                    {% for timeSlot in timeSlots %}
+                        <!-- start and end are variables containing the start and end times of a time slot-->
+                        {% with start=timeSlot.start.formatted|slice:"-8:" end=timeSlot.end.formatted|slice:"-8:" timeSlotId=timeSlot.id %}
+                            <!--only display time slots that have enough equipment for the user's preferences-->
+                            <div class="timeSlotRows"
+                                {% for groupQuantitiesDict in groupQuantitiesList %}
+                                    {% for tixType in timeSlot.ticket_types %}
+                                        {% for key, val in userPreferences %}
+                                            {% if "Cycling" not in eventName and forloop.counter == forloop.parentloop.counter|add:"-2" and tixType.quantity < val %}
+                                                style="display: none"
+                                            {% elif "Cycling" in eventName and tixType.name == key and tixType.quantity == 0 %}
+                                                style="display: none"
+                                            {% elif "Cycling" in eventName and groupQuantitiesDict.id == timeSlotId and "Tan" in key and groupQuantitiesDict.Tan < val %}
+                                                style="display: none"
+                                            {% elif "Cycling" in eventName and groupQuantitiesDict.id == timeSlotId and "Due" in key and groupQuantitiesDict.Due < val %}
+                                                style="display: none"
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% empty %}
+                                    {% for tixType in timeSlot.ticket_types %}
+                                        {% for key, val in userPreferences %}
+                                            {% if "Cycling" not in eventName and forloop.counter == forloop.parentloop.counter|add:"-2" and tixType.quantity < val %}
+                                                style="display: none"
+                                            {% elif "Cycling" in eventName and tixType.name == key and tixType.quantity == 0 %}
+                                                style="display: none"
+                                            {% elif "Cycling" in eventName and groupQuantitiesDict.id == timeSlotId and "Tan" in key and groupQuantitiesDict.Tan < val %}
+                                                style="display: none"
+                                            {% elif "Cycling" in eventName and groupQuantitiesDict.id == timeSlotId and "Due" in key and groupQuantitiesDict.Due < val %}
+                                                style="display: none"
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endfor %}
+                            > {{start}} - {{end}}<a class="button" target="myiframe" href="https://www.tickettailor.com/events/alloutadventures/{{ timeSlot.id|slice:'3:' }}/select-tickets?widget=true">Register</a>                 </div>
+                        {% endwith %}
+                    {% endfor %}
+                <p id="newUserMessage">First Time? Not sure what you need? <br>Give us a call at <a href="tel:4135842052">(413) 584-2052</a></p>
+                </td>
+                {% if firstTimeSlot.ticket_types|length > 2 %}
+                    <td id="filtersSection">
+                        <form id="filterSlotsForm" onsubmit="return submitForm()">
+                            <table>
+                                <tr>
+                                    <th colspan="2" id="filtersSectionHeader">
+                                        FILTERS
+                                        <a id="filtersQuestionMark" title='Select your equipment needs below and click the&#013;"Update" button to display the matching time slots.'>
+                                            {% load static %}
+                                            <img class="questionMarkImg" src="{% static 'question_mark.png' %}" alt="Hover For More Information About Using Filters">
+                                        </a>
+                                    </th>
+                                </tr>
+                                {% if "Cycling" not in eventName %}
+                                    {% for ticketType in firstTimeSlot.ticket_types %}
+                                        {% for key, val in userPreferences %}
+                                            {% if forloop.counter == forloop.parentloop.counter|add:"-2" and forloop.parentloop.counter > 2 %}
+                                                <tr class="filterRows">
+                                                    <td><label for='var_{{ forloop.parentloop.counter|add:"-2" }}'>{{ticketType.name}}: </label></td>
+                                                    <td>
+                                                        <input type="number" class="userInputs" id='var_{{ forloop.parentloop.counter|add:"-2" }}' name='var_{{ forloop.parentloop.counter|add:"-2" }}' value={{val}}>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% empty %}
+                                            {% if forloop.counter > 2 %}
+                                                <tr class="filterRows">
+                                                    <td><label for='var_{{ forloop.counter|add:"-2" }}'>{{ticketType.name}}: </label></td>
+                                                    <td>
+                                                        <input type="number" class="userInputs" id='var_{{ forloop.counter|add:"-2" }}' name='var_{{ forloop.counter|add:"-2" }}' value=0>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% else %}
+                                    {% regroup firstTimeSlot.ticket_types by group_id as group_id_list %}
+                                    {% for group_id in group_id_list %}
+                                        {% if group_id.grouper != None %}
+                                            {% for ticketGroup in ticketGroups %}
+                                                {% if ticketGroup.id == group_id.grouper and ticketGroup.name and "Other" not in ticketGroup.name and "Caregiver" not in ticketGroup.name %}
+                                                    {% if "Tandem Recumbent" in ticketGroup.name or "Duet Wheelchair" in ticketGroup.name %}
+                                                        <tr class="filterRows ticketGroupTitle">
+                                                            <td><label for='{{ ticketGroup.name }}'>{{ ticketGroup.name|slice:":-17" }}</label></td>
+                                                            <td>
+                                                                <input type="number" class="userInputs cyclingVar" id='{{ ticketGroup.name }}' name='number_input_{{ ticketGroup.name }}' value=0>
+                                                            </td>
+                                                        </tr>
+                                                    {% else %}
+                                                        <tr class="filterRows ticketGroupTitle"><td colspan="2">{{ ticketGroup.name|slice:":-17" }}</td></tr>
+                                                    {% endif %}
+                                                    {% for ticketType in group_id.list|dictsort:"name" %}
+                                                        {% if "Tandem Recumbent" not in ticketGroup.name and "Duet Wheelchair" not in ticketGroup.name %}
+                                                            <tr>
+                                                                <td colspan="2" class="checkboxTd">
+                                                                    <input type="checkbox" id='{{ ticketType.name }}' name='{{ ticketType.name }}'>
+                                                                    <label for='{{ ticketType.name }}'>{{ ticketType.name }}</label>
+                                                                </td>
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                                <tr>
+                                    <td><a id="reset"  href="/?Neon_event_id={{ Neon_event_id }}">Clear All ❯</a></td>
+                                    <td>
+                                        <input type="text" class="hiddenVar" name="Neon_event_id" value="{{ Neon_event_id }}">
+                                        <input type="submit" class="button" id="formSubmitBttn" value="Update">
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </td>
+                {% endif %}
+            </tr>
+        </table>
+        {% endwith %}
+    </span>
+    <script src="../static/determineSlots.js"></script>
+</body>
+</html>
