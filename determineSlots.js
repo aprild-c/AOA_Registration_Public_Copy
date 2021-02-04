@@ -52,8 +52,14 @@ window.onload = function () {
     // Gets Neon event id from AOA url (the parent to the iframe) and reloads page
     if (getAllQueryVariables("Neon_event_id").length === 0) {
         var parentURL = document.referrer;
-        var varIndex = parentURL.indexOf("event=");
-        var Neon_event_id = parentURL.slice(varIndex + 6, parentURL.indexOf("&", varIndex));
+        var event_id_start_index = parentURL.indexOf("event=") + 6;
+        var event_id_end_index = parentURL.indexOf("&", event_id_start_index);
+        var Neon_event_id;
+        if (event_id_end_index === -1) {
+            Neon_event_id = parentURL.slice(event_id_start_index);
+        } else {
+            Neon_event_id = parentURL.slice(event_id_start_index, event_id_end_index);
+        }
         window.location.href = ("/?Neon_event_id=" + Neon_event_id);
     } else {
         pageLoader();
